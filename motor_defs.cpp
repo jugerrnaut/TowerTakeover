@@ -8,7 +8,7 @@ MotorDefs::MotorDefs(){
     fleft_drive = new pros::Motor(7, false);
     fright_drive = new pros::Motor(11, true);
     bright_drive = new pros::Motor(8,true);
-    bleft_drive = new pros::Motor(6,false);
+    bleft_drive = new pros::Motor(16,false);
     roller_right = new pros::Motor(17,true);
     roller_left = new pros::Motor(10,false);
     lift = new pros::Motor(13,false);

@@ -17,19 +17,22 @@ auto myChassis = ChassisControllerFactory::create(
 
 //defining the motion controller
 auto profileController = AsyncControllerFactory::motionProfile(
-  0.5,  // Maximum linear velocity of the Chassis in m/s
-  0.3,  // Maximum linear acceleration of the Chassis in m/s/s
+  0.8,  // Maximum linear velocity of the Chassis in m/s
+  0.4,  // Maximum linear acceleration of the Chassis in m/s/s
   3.45, // Maximum linear jerk of the Chassis in m/s/s/s
   myChassis // Chassis Controller
 );
 
+void flipout(int power){
+  mo.roller_right -> move(-power);
+}
 //pid turning
-void turn(double angle){
-  double scaled_angle = angle;
-  mo.fleft_drive->move_relative(scaled_angle, 100);
-  mo.bleft_drive->move_relative(scaled_angle, 100);
-  mo.fright_drive->move_relative(-scaled_angle, 100);
-  mo.bright_drive->move_relative(-scaled_angle, 100);
+void turn(int angle){
+  int scaled_angle = angle;
+  mo.fleft_drive->move_absolute(scaled_angle, 100);
+  mo.bleft_drive->move_absolute(scaled_angle, 100);
+  mo.fright_drive->move_absolute(-scaled_angle, 100);
+  mo.bright_drive->move_absolute(-scaled_angle, 100);
 }
 
 //part of the turning function
@@ -38,7 +41,7 @@ void waitForCompletion(){
 			abs(mo.bleft_drive->get_position() - mo.bleft_drive->get_target_position()) +
 			abs(mo.fleft_drive->get_position() - mo.fleft_drive->get_target_position()) +
 			abs(mo.fright_drive->get_position() - mo.fright_drive->get_target_position())) > 6 * 4 /* Number of drive mtrs */ ) {
-		pros::Task::delay(5);
+		pros::Task::delay(1);
 	}
 }
 
@@ -55,27 +58,17 @@ void movearm(int power){
     mo.arm_motor -> move(power);
 }
 
-void autonomous() {
-//flipping out
-
-//starting the intake
-roller_intake(127);
-//moving toward 1st column
-profileController.generatePath({Point{0_ft, 0_ft, 0_deg}, Point{1.6_ft, 0_ft, 0_deg}}, "A");
-profileController.setTarget("A");
-profileController.waitUntilSettled();
-//bezier turning
-profileController.generatePath({Point{0_ft, 0_ft, 0_deg}, Point{1.5_ft, 2_ft, 0_deg}}, "B");
-profileController.setTarget("B",true);
-profileController.waitUntilSettled();
-//moving toward the second column
-
-//PID turning
-
-//moving toward the goal zone
-
-//tilting
-
-//moving back
+void move_drive_1(int right, int left) {
+	mo.fright_drive -> move(right);
+	mo.fleft_drive -> move(left);
+	mo.bright_drive -> move(right);
+	mo.bleft_drive -> move(left);
 }
 
+
+// Limit drivetrain speed based on the constant defined above
+
+void autonomous() {
+//PID turning
+
+}

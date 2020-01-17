@@ -38,18 +38,18 @@ void armmove(void*arm){
 
 	while (true){
 		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
-			move_arm(-127);
+			move_arm(-50);
 			while(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
-				pros::Task::delay(10);
+				pros::Task::delay(1);
 			}
-			move_arm(0);
+		move_arm(0);
 		}
 		else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
-			move_arm(127);
+			move_arm(100);
 			while(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
-				pros::Task::delay(10);
-			}
-			move_arm(127);
+				pros::Task::delay(1);
+			};
+		move_arm(24); //made this value
 		}
 		pros::Task::delay(10);
 	}
@@ -59,7 +59,7 @@ void tilter(void*tilter){
 	while (true){
 	//if the up button is pressed
 		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP) == 1){
-			move_lift_velocity(70); //from 127
+			move_lift_velocity(110); //from 127
 			while (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP) == 1){
 				pros::Task::delay(10);
 			}
@@ -134,7 +134,7 @@ void roller(void*roller_void){
 			pros::Task::delay(250);
 		}
 		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-			if (state = -1){
+			if (state == -1){
 				move_roller(0);
 				state = 0;
 			}
